@@ -103,11 +103,17 @@ session.end()
 session.set_ignore_users(['random_user', 'another_username'])
 ```
 
-```python
-#searches the description and owner comments for the given words
-# and won't like the image if one of the words are in there
 
-session.set_dont_like(['food', 'eat', 'meal'])
+`.set_dont_like` searches the description and owner comments for hashtags and won't like the image if one of those hashtags are in there
+
+You have 4 options to exclude posts from your InstaPy session:
+* words starting with `#` will match only exact hashtags (e. g. `#cat` matches `#cat`, but not `#catpic`)
+* words starting with `[` will match all hashtags starting with your word (e. g. `[cat` matches `#catpic`, `#caturday` and so on)
+* words starting with `]` will match all hashtags ending with your word (e. g. `]cat` matches `#mycat`, `#instacat` and so on)
+* words without these prefixes will match all hashtags that contain your word regardless if it is placed at the beginning, middle or end of the hashtag (e. g. `cat` will match `#cat`, `#mycat`, `#caturday`, `#rainingcatsanddogs` and so on)
+
+```python
+session.set_dont_like('#exactmatch', '[startswith', ']endswith', 'broadmatch')
 ```
 ##### Ignoring Restrictions
 
@@ -186,12 +192,26 @@ session.set_lower_follower_count(limit = 1)
 session.unfollow_users(amount=10)
 ```
 
-##### Running on a server ?
+##### Running on a server?
 
 ```python
 #you can use the nogui parameter to use a virtual display
 
 session = InstaPy(username='test', password='test', nogui=True)
+```
+
+##### Running InstaPy automated
+
+You can add InstaPy to your crontab, so that the script will be executed regularly. This is especially useful for servers, but be sure not to break Instagrams follow and like limits.
+
+**An example:**
+
+```
+# Edit or create a crontab
+crontab -e
+# Add information to execute your InstaPy regularly.
+# With cd you navigate to your InstaPy folder, with the part after && you execute your quickstart.py with python. Make sure that those paths match your environment.
+45 */4 * * * cd /home/user/InstaPy && /usr/bin/python ./quickstart.py
 ```
 
 ### Clarifai ImageAPI

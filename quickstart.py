@@ -3,21 +3,21 @@ from instapy import InstaPy
 # Write your automation here
 # Stuck ? Look at the github page or the examples in the examples folder
 
-dont_like = ['food', 'girl', 'hot']
-ignore_words = ['pizza']
-friend_list = ['friend1', 'friend2', 'friend3']
+dont_like = ['sex', 'nsfw', 'girl', 'pizza', 'gluten', 'weightloss', 'hair', 'popdaily', 'like4like', 'bodybuilder', 'loveme', '#kiss', '#xoxo', '#selfie', 'iloveyou', '#love']
+ignore_words = []
+friend_list = []
+ignore_users = ['foodienepal', 'yamiez_ynr', 'beatricesblog', 'realgoodyummiez']
 
-# If you want to enter your Instagram Credentials directly just enter
-# username=<your-username-here> and password=<your-password> into InstaPy
-# e.g like so InstaPy(username="instagram", password="test1234")
+tags = ['#foodporn', '#foodpics', '#instafood', '#meatporn', '#barbecue', '#grilling', '#onthetable']
 
-InstaPy()\
+InstaPy(username='ekampf', password='Assert123', nogui=True)\
   .login()\
-  .set_upper_follower_count(limit = 2500) \
-  .set_do_comment(True, percentage=10) \
-  .set_comments(['Cool!', 'Awesome!', 'Nice!']) \
-  .set_dont_include(friend_list) \
-  .set_dont_like(dont_like) \
+  .set_ignore_users(ignore_users) \
+  .set_upper_follower_count(limit=2500) \
   .set_ignore_if_contains(ignore_words) \
-  .like_by_tags(['dog', '#cat'], amount=100) \
+  .set_dont_like(dont_like) \
+  .like_by_tags(tags, amount=100) \
+  .set_do_follow(enabled=True, percentage=20) \
+  .set_comment([u'\u0001f924']) \
+  .set_do_comment(enabled=True, percentage=20) \
   .end()

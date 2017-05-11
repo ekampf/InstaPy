@@ -87,6 +87,7 @@ class InstaPy:
 
     log_follower_num(self.browser, self.username)
 
+    self.logFile.flush()
     return self
 
   def set_do_comment(self, enabled=False, percentage=0):
@@ -253,6 +254,7 @@ class InstaPy:
       print('--> {}'.format(tag.encode('utf-8')))
       self.logFile.write('Tag [{}/[]]'.format(index + 1, len(tags)))
       self.logFile.write('--> {}\n'.format(tag.encode('utf-8')))
+      self.logFile.flush()
 
       try:
         links = get_links_for_tag(self.browser, tag, amount, media)
@@ -262,6 +264,8 @@ class InstaPy:
 
         self.aborting = True
         return self
+
+      self.logFile.flush()
 
       for i, link in enumerate(links):
         print('[{}/{}]'.format(i + 1, len(links)))
@@ -326,6 +330,7 @@ class InstaPy:
 
         print('')
         self.logFile.write('\n')
+        self.logFile.flush()
 
     print('Liked: {}'.format(liked_img))
     print('Already Liked: {}'.format(already_liked))

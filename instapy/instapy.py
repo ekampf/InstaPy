@@ -38,7 +38,7 @@ class InstaPy:
     self.browser = webdriver.Chrome('./assets/chromedriver', chrome_options=chrome_options)
     self.browser.implicitly_wait(25)
 
-    self.logFile = open('./logs/logFile.txt', 'wa')
+    self.logFile = open('./logs/logFile.txt', 'a')
     self.logFile.write('Session started - %s\n' % (datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
     self.username = username or environ.get('INSTA_USER')

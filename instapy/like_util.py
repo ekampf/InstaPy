@@ -164,8 +164,6 @@ def check_link(browser, link, dont_like, ignore_if_contains, ignore_users,
   if (user_name in ignore_users) or (user_name == username):
     return True, user_name, is_video, 'Username'
 
-  print('User {} is not in ignore_users'.format(user_name))
-
   """Find the number of followes the user has"""
   if like_by_followers_upper_limit or like_by_followers_lower_limit:
     userlink = 'https://www.instagram.com/' + user_name

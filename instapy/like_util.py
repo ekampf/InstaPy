@@ -22,8 +22,16 @@ def get_links_for_tag(browser, tag, amount, media=None):
     # Make it an array to use it in the following part
     media = [media]
 
-  browser.get('https://www.instagram.com/explore/tags/'
-              + (tag[1:] if tag[:1] == '#' else tag))
+  for retry in range(0, 5):
+    try:
+      browser.get('https://www.instagram.com/explore/tags/' + (tag[1:] if tag[:1] == '#' else tag))
+    except TimeoutException:
+      print('TimeoutException on {}'.format(link.encode('utf-8')))
+      if retry == 5:
+        raise
+
+    break
+
   sleep(2)
 
   # clicking load more

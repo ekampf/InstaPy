@@ -160,6 +160,12 @@ def check_link(browser, link, dont_like, ignore_if_contains, ignore_users,
 
   print('Image from: {}'.format(user_name.encode('utf-8')))
 
+  """Check if the user_name is in the ignore_users list"""
+  if (user_name in ignore_users) or (user_name == username):
+    return True, user_name, is_video, 'Username'
+
+  print('User {} is not in ignore_users'.format(user_name))
+
   """Find the number of followes the user has"""
   if like_by_followers_upper_limit or like_by_followers_lower_limit:
     userlink = 'https://www.instagram.com/' + user_name
@@ -177,10 +183,6 @@ def check_link(browser, link, dont_like, ignore_if_contains, ignore_users,
 
   print('Link: {}'.format(link.encode('utf-8')))
   print('Description: {}'.format(image_text.encode('utf-8')))
-
-  """Check if the user_name is in the ignore_users list"""
-  if (user_name in ignore_users) or (user_name == username):
-    return True, user_name, is_video, 'Username'
 
   if any((word in image_text for word in ignore_if_contains)):
       return False, user_name, is_video, 'None'

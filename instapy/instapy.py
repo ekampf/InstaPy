@@ -6,6 +6,7 @@ from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import TimeoutException
 
 from .clarifai_util import check_image
 from .comment_util import comment_image
@@ -37,14 +38,12 @@ class InstaPy:
     self.browser = webdriver.Chrome('./assets/chromedriver', chrome_options=chrome_options)
     self.browser.implicitly_wait(25)
 
-    self.logFile = open('./logs/logFile.txt', 'a')
-    self.logFile.write('Session started - %s\n' \
-                       % (datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    self.logFile = open('./logs/logFile.txt', 'wa')
+    self.logFile.write('Session started - %s\n' % (datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
     self.username = username or environ.get('INSTA_USER')
     self.password = password or environ.get('INSTA_PW')
     self.nogui = nogui
-
 
     self.do_comment = False
     self.comment_percentage = 0
@@ -249,6 +248,8 @@ class InstaPy:
 
     tags = tags or []
 
+    timeouts = 0
+
     for index, tag in enumerate(tags):
       print('Tag [{}/{}]'.format(index + 1, len(tags)))
       print('--> {}'.format(tag.encode('utf-8')))
@@ -327,6 +328,19 @@ class InstaPy:
         except NoSuchElementException as err:
           print('Invalid Page: {}'.format(err))
           self.logFile.write('Invalid Page: {}\n'.format(err))
+        except TimeoutException as timeout_err:
+          print('Timeout: {}'.format(timeout_err))
+          self.logFile.write('Timeout: {}\n'.format(timeout_err))
+
+          timeouts = timeouts + 1
+          if timeouts > 5:
+              print('Too many timeouts...')
+              self.logFile.write('Too many timeouts...')
+              break
+
+          sleep(5)
+
+
 
         print('')
         self.logFile.write('\n')

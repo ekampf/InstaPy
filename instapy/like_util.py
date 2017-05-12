@@ -4,6 +4,7 @@ import re
 from math import ceil
 from re import findall
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import TimeoutException
 
 from .time_util import sleep
 
@@ -87,7 +88,16 @@ def get_links_for_tag(browser, tag, amount, media=None):
 
 def check_link(browser, link, dont_like, ignore_if_contains, ignore_users,
                username, like_by_followers_upper_limit, like_by_followers_lower_limit):
-  browser.get(link)
+  for retry in range(0, 5):
+    try:
+      browser.get(link)
+    except TimeoutException:
+      print('TimeoutException on {}'.format(link.encode('utf-8')))
+      if retry == 5:
+          raise
+
+    break
+
   sleep(2)
 
   """Check if the Post is Valid/Exists"""
